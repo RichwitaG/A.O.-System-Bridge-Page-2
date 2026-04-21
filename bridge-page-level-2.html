@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Operator System — You're Closer Than You Think</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand-bg: #0a0a0a;
+      --brand-surface: #111111;
+      --brand-surface-2: #181818;
+      --brand-border: rgba(255,255,255,0.08);
+      --brand-border-bright: rgba(255,255,255,0.16);
+      --brand-accent: #FF5C35;
+      --brand-accent-dim: rgba(255,92,53,0.12);
+      --brand-white: #F5F3EE;
+      --brand-muted: rgba(245,243,238,0.45);
+      --brand-muted-2: rgba(245,243,238,0.25);
+      --font-display: 'Syne', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--brand-bg);
+      color: var(--brand-white);
+      font-family: var(--font-display);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      padding: 80px 32px 72px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brand-accent);
+      background: var(--brand-accent-dim);
+      border: 0.5px solid rgba(255,92,53,0.3);
+      border-radius: 2px;
+      padding: 5px 12px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 60px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--brand-white);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .serif-word {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--brand-accent);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--brand-muted);
+      line-height: 1.6;
+      max-width: 500px;
+    }
+
+    .hero-divider {
+      width: 100%;
+      height: 0.5px;
+      background: linear-gradient(90deg, var(--brand-accent) 0%, transparent 60%);
+      margin: 48px 0 0;
+      opacity: 0.4;
+    }
+
+    .section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 32px;
+      border-top: 0.5px solid var(--brand-border);
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brand-muted-2);
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      font-size: clamp(22px, 3.5vw, 30px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      color: var(--brand-white);
+    }
+
+    .section p {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--brand-muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .mirror-list {
+      list-style: none;
+      margin: 20px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mirror-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--brand-white);
+      line-height: 1.5;
+    }
+
+    .mirror-list li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--brand-accent);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .pull-quote {
+      border-left: 2px solid var(--brand-accent);
+      padding: 12px 20px;
+      margin: 24px 0;
+      background: var(--brand-accent-dim);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .pull-quote p {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--brand-white);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .gap-block {
+      background: var(--brand-surface);
+      border: 0.5px solid var(--brand-border-bright);
+      border-radius: 4px;
+      padding: 32px;
+      margin: 24px 0;
+    }
+
+    .gap-statement {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-white);
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .gap-truth {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand-accent);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin: 16px 0 20px;
+    }
+
+    .consequence-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .consequence-item {
+      background: var(--brand-surface-2);
+      border: 0.5px solid var(--brand-border);
+      border-radius: 3px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-family: var(--font-mono);
+      color: var(--brand-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .insight-block {
+      background: var(--brand-surface-2);
+      border: 0.5px solid rgba(255,92,53,0.25);
+      border-radius: 4px;
+      padding: 36px 32px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .insight-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--brand-accent);
+      opacity: 0.7;
+    }
+
+    .insight-block h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-white);
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .vs-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .vs-col {
+      background: var(--brand-surface);
+      border: 0.5px solid rgba(255,92,53,0.15);
+      border-radius: 3px;
+      padding: 14px 16px;
+    }
+
+    .vs-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      color: var(--brand-muted-2);
+    }
+
+    .vs-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--brand-white);
+      line-height: 1.3;
+    }
+
+    .vs-separator {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: var(--brand-accent);
+      text-align: center;
+    }
+
+    .need-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .need-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--brand-surface);
+      border: 0.5px solid var(--brand-border);
+      border-radius: 3px;
+      padding: 18px 20px;
+      transition: border-color 0.2s;
+    }
+
+    .need-item:hover { border-color: var(--brand-border-bright); }
+
+    .need-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--brand-accent-dim);
+      border: 0.5px solid rgba(255,92,53,0.3);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .need-icon svg { width: 16px; height: 16px; }
+
+    .need-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--brand-white);
+      line-height: 1.4;
+    }
+
+    .need-sub {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--brand-muted);
+      margin-top: 3px;
+      letter-spacing: 0.02em;
+    }
+
+    .direction-stat {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--brand-white);
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .direction-stat span {
+      color: var(--brand-accent);
+      font-style: normal;
+      font-family: var(--font-display);
+      font-weight: 800;
+    }
+
+    .cta-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 32px 80px;
+      border-top: 0.5px solid var(--brand-border);
+      text-align: center;
+    }
+
+    .cta-pre {
+      font-size: 15px;
+      color: var(--brand-muted);
+      line-height: 1.7;
+      max-width: 460px;
+      margin: 0 auto 32px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--brand-accent);
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+      text-decoration: none;
+    }
+
+    .cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .cta-btn:active { transform: scale(0.98); }
+    .cta-btn svg { width: 16px; height: 16px; }
+
+    .cta-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--brand-muted-2);
+      letter-spacing: 0.08em;
+      margin-top: 16px;
+      text-transform: uppercase;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero { animation: fadeUp 0.5s ease both; }
+    .section:nth-child(1) { animation: fadeUp 0.5s ease 0.06s both; }
+    .section:nth-child(2) { animation: fadeUp 0.5s ease 0.10s both; }
+    .section:nth-child(3) { animation: fadeUp 0.5s ease 0.14s both; }
+    .section:nth-child(4) { animation: fadeUp 0.5s ease 0.18s both; }
+    .section:nth-child(5) { animation: fadeUp 0.5s ease 0.22s both; }
+    .section:nth-child(6) { animation: fadeUp 0.5s ease 0.26s both; }
+    .cta-section { animation: fadeUp 0.5s ease 0.3s both; }
+
+    @media (max-width: 520px) {
+      .hero { padding: 56px 20px 52px; }
+      .section { padding: 44px 20px; }
+      .cta-section { padding: 48px 20px 64px; }
+      .vs-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">AI Operator System — Level 2</div>
+    <h1>You're <span class="serif-word">Closer</span> Than You Think.</h1>
+    <p class="hero-sub">You've already started using AI. You're just missing the structure.</p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <!-- MIRROR -->
+  <div class="section">
+    <div class="section-label">Where you are right now</div>
+    <h2>Sound familiar?</h2>
+    <ul class="mirror-list">
+      <li>You use AI somewhat consistently</li>
+      <li>You get good outputs… sometimes</li>
+      <li>You experiment with different tools</li>
+      <li>You try to make things more efficient</li>
+    </ul>
+    <div class="pull-quote">
+      <p>It's not reliable yet — and you know it.</p>
+    </div>
+  </div>
+
+  <!-- THE GAP -->
+  <div class="section">
+    <div class="section-label">The real gap</div>
+    <div class="gap-block">
+      <p class="gap-statement">The problem isn't effort.</p>
+      <p class="gap-statement" style="color: var(--brand-muted); font-weight: 400; font-size: 15px; margin-top: 4px;">It's not even knowledge.</p>
+      <p class="gap-truth">You don't have a clear system.</p>
+      <p style="font-size: 14px; color: var(--brand-muted); margin-bottom: 14px;">Which means:</p>
+      <div class="consequence-list">
+        <div class="consequence-item">You start from scratch too often</div>
+        <div class="consequence-item">Good outputs don't repeat</div>
+        <div class="consequence-item">Your workflow depends on guesswork</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHT -->
+  <div class="section">
+    <div class="section-label">Why progress feels slow</div>
+    <div class="insight-block">
+      <h3>Most people at this stage keep doing the same thing.</h3>
+      <div class="vs-row">
+        <div class="vs-col">
+          <div class="vs-tag">What they do</div>
+          <div class="vs-text">Keep experimenting</div>
+        </div>
+        <div class="vs-separator">→</div>
+        <div class="vs-col">
+          <div class="vs-tag">Instead of</div>
+          <div class="vs-text">Structuring</div>
+        </div>
+      </div>
+      <p style="margin-top: 20px; font-size: 14px; color: var(--brand-muted); line-height: 1.6;">Experimentation without structure is just expensive trial and error. That's why the results never compound.</p>
+    </div>
+  </div>
+
+  <!-- WHAT YOU NEED -->
+  <div class="section">
+    <div class="section-label">What actually moves the needle</div>
+    <h2>Before you scale anything…</h2>
+    <p>You need one thing in place first.</p>
+    <div class="need-block">
+      <div class="need-item">
+        <div class="need-icon">
+          <svg viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="5" height="5" stroke="#FF5C35" stroke-width="1.2"/>
+            <rect x="9" y="2" width="5" height="5" stroke="#FF5C35" stroke-width="1.2"/>
+            <rect x="2" y="9" width="5" height="5" stroke="#FF5C35" stroke-width="1.2"/>
+            <path d="M11.5 9v6M9 11.5h6" stroke="#FF5C35" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="need-text">A simple, repeatable system</div>
+          <div class="need-sub">Input → Logic → Output — on demand, every time</div>
+        </div>
+      </div>
+    </div>
+    <div class="pull-quote">
+      <p>Not more tools. Not more prompts. One system that runs reliably — that's the unlock.</p>
+    </div>
+  </div>
+
+  <!-- DIRECTION -->
+  <div class="section">
+    <div class="section-label">Your best move right now</div>
+    <p class="direction-stat">At this stage, the answer isn't <span>more tools.</span><br/>It's <span>clarity.</span></p>
+    <p>You're not far from having something that actually works. The gap between where you are and where you want to be isn't more information — it's structure. One honest look at what you're already doing, and we can turn it into a system that compounds.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <p class="cta-pre">Ready to stop guessing and build something that actually repeats? Let's map your system together.</p>
+    <a class="cta-btn" href="https://calendly.com/rmgrainger92/30min">
+      Book a Call to Map Your System
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <p class="cta-sub">AI Operator System — No fluff. Just systems.</p>
+  </div>
+
+</body>
+</html>
